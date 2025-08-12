@@ -1,0 +1,788 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meteora Community Contribution Report</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0a0a0b;
+            color: #ffffff;
+            overflow: hidden;
+            line-height: 1.4;
+        }
+        
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            background: radial-gradient(ellipse at top, #1a1a2e 0%, #0a0a0b 70%);
+        }
+        
+        .slide {
+            width: 100%;
+            height: 100%;
+            padding: 80px 60px;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: absolute;
+            background: rgba(0,0,0,0.3);
+        }
+        
+        .slide.active {
+            display: flex;
+            animation: slideIn 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            will-change: transform, opacity;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Meteora Logo */
+        .logo-area {
+            position: absolute;
+            top: 40px;
+            left: 60px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 24px;
+            font-weight: 700;
+            color: #00d4ff;
+            z-index: 100;
+        }
+        
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        
+        /* Typography */
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #00d4ff 0%, #ffffff 50%, #00d4ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+        
+        h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #00d4ff;
+            letter-spacing: -0.01em;
+        }
+        
+        h3 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #e0e0e0;
+        }
+        
+        p, li {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            color: #b0b0b0;
+            font-weight: 400;
+        }
+        
+        /* Cards */
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 2rem;
+            backdrop-filter: blur(20px);
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+            overflow: visible;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.3), transparent);
+        }
+        
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0, 212, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        /* Grid Layouts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            width: 100%;
+            max-width: 1000px;
+        }
+        
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            width: 100%;
+            max-width: 1200px;
+        }
+        
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            width: 100%;
+            max-width: 1000px;
+        }
+        
+        /* Special Elements */
+        .highlight {
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            color: #ffffff;
+            padding: 0.4rem 1rem;
+            border-radius: 24px;
+            font-weight: 600;
+            display: inline-block;
+            margin: 0.5rem;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.2);
+        }
+        
+        .icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .checklist {
+            list-style: none;
+            text-align: left;
+            max-width: 100%;
+            width: 100%;
+        }
+        
+        .checklist li {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 1.5rem;
+            color: #e0e0e0;
+            display: block;
+            width: 100%;
+        }
+        
+        .checklist li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #00d4ff;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        /* Navigation */
+        .nav-left {
+            position: fixed;
+            left: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1000;
+        }
+
+        .nav-right {
+            position: fixed;
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1000;
+        }
+        
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            padding: 12px 24px;
+            border-radius: 12px;
+            cursor: pointer;
+            backdrop-filter: blur(20px);
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        
+        .nav-btn:hover {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: rgba(0, 212, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #00d4ff, #0099cc);
+            transition: width 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
+        
+        .slide-counter {
+            position: fixed;
+            top: 40px;
+            right: 60px;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Metrics Cards */
+        .metric {
+            text-align: center;
+        }
+        
+        .metric .number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #00d4ff;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric .label {
+            font-size: 1rem;
+            color: #a0a0a0;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        /* Tool Showcase */
+        .tool-card {
+            text-align: center;
+            padding: 2.5rem 2rem;
+        }
+        
+        .tool-card .icon {
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(0, 153, 204, 0.1));
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 2rem 0;
+        }
+
+        /* Compact CTA Section for tight spaces */
+        .cta-section.compact {
+            padding: 1.2rem 2rem;
+            margin: 0.5rem 0;
+            border-radius: 12px;
+        }
+
+        /* Compact Card for tight spaces */
+        .card.compact {
+            padding: 1.2rem;
+        }
+
+        .card.compact .metric {
+            margin-bottom: 1rem;
+        }
+
+        .card.compact .metric .number {
+            font-size: 2rem;
+        }
+
+        .card.compact .metric .label {
+            font-size: 1rem;
+        }
+
+        .card.compact .checklist {
+            font-size: 0.85rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .slide {
+                padding: 40px 30px;
+            }
+            
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 2rem; }
+            
+            .grid-2, .grid-3, .grid-4 {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+        
+        /* Custom animations */
+        .fade-in {
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .subtitle {
+            color: #a0a0a0;
+            font-weight: 400;
+            font-size: 1.4rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="logo-area">
+            <div class="logo-icon">⚡</div>
+            <span>Meteora</span>
+        </div>
+        
+        <div class="progress-bar"></div>
+        
+        <div class="slide-counter">
+            <span id="current-slide">1</span> / <span id="total-slides">9</span>
+        </div>
+
+        <!-- Slide 1: Title & Introduction -->
+        <div class="slide active">
+            <div style="margin-bottom: 2rem;">
+                <div style="font-size: 3.5rem; margin-bottom: 1rem;">🚀</div>
+                <h1 style="font-size: 3rem;">Meteora Community Contribution Report</h1>
+                <h3 class="subtitle">Independent Developer · Zero-Cost Innovation</h3>
+            </div>
+
+            <div class="card" style="max-width: 800px; margin: 2rem 0; padding: 2rem;">
+                <h3 style="color: #00d4ff; margin-bottom: 1.5rem;">👋 Quick Introduction</h3>
+                <ul class="checklist" style="text-align: left;">
+                    <li><strong>Who I am:</strong> Independent volunteer developer, active Meteora community member</li>
+                    <li><strong>What I built:</strong> 3 tools using only free platforms and resources</li>
+                    <li><strong>What I want:</strong> Demonstrate value and explore partnership opportunities</li>
+                </ul>
+                <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <p style="font-size: 1rem; color: #00d4ff;">
+                        <strong>Contact:</strong> <a href="https://x.com/rochestor_mu" target="_blank" style="color: #00d4ff; text-decoration: none;">@rochestor_mu</a>
+                    </p>
+                </div>
+            </div>
+
+            <div style="margin-top: 2rem;">
+                <p style="font-size: 1.2rem; color: #e0e0e0; font-style: italic;">Building Tools for the Community · Driving Ecosystem Innovation</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Problem Discovery -->
+        <div class="slide" style="justify-content: flex-start; padding-top: 120px;">
+            <h2>💡 Identifying Community Needs</h2>
+            <div style="margin: 2rem 0;">
+                <div class="highlight">Real User Pain Points</div>
+            </div>
+            <div class="card" style="max-width: 900px; padding: 2.5rem; min-height: auto;">
+                <ul class="checklist" style="font-size: 1.2rem; margin: 0 auto; max-width: 100%;">
+                    <li style="margin-bottom: 1.5rem;">"How many fees did I get for Season 1?" <span style="color: #ff6b6b; font-size: 1rem;">(Existing tool: 30+ min query time!)</span></li>
+                    <li style="margin-bottom: 1.5rem;">"How many fees did I get for Season 2?" <span style="color: #ff6b6b; font-size: 1rem;">(No existing solution)</span></li>
+                    <li style="margin-bottom: 1.5rem;">"Who are the profitable wallets in hot pools?" <span style="color: #ff6b6b; font-size: 1rem;">(No existing solution)</span></li>
+                </ul>
+            </div>
+            <div class="cta-section" style="margin-top: 1.5rem; margin-bottom: 1rem; max-width: 700px;">
+                <p style="font-size: 1.4rem; color: #00d4ff; font-weight: 600;">
+                    I built fast, reliable solutions using only free platforms and zero funding!
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 3: Tool Overview -->
+        <div class="slide">
+            <h2>🎯 Three-Tool Suite</h2>
+            <div class="grid-3" style="margin: 3rem 0;">
+                <div class="card tool-card">
+                    <div class="icon">⚡</div>
+                    <h3>Season 2 Dedicated</h3>
+                    <p>Fees Tracker</p>
+                    <div style="margin-top: 1rem;">
+                        <a href="https://gududefengzhong.github.io/meteora_s2_fees_checker/" target="_blank" style="color: #00d4ff; font-size: 0.9rem; text-decoration: none;">🔗 Try it</a>
+                    </div>
+                </div>
+                <div class="card tool-card">
+                    <div class="icon">💰</div>
+                    <h3>Profitable Wallet</h3>
+                    <p>Tracker</p>
+                    <div style="margin-top: 1rem;">
+                        <a href="https://gududefengzhong.github.io/hot_pool_tracker/meteora-tracker.html" target="_blank" style="color: #00d4ff; font-size: 0.9rem; text-decoration: none;">🔗 Try it</a>
+                    </div>
+                </div>
+                <div class="card tool-card">
+                    <div class="icon">🔍</div>
+                    <h3>S1 Fees</h3>
+                    <p>Checker</p>
+                    <div style="margin-top: 1rem;">
+                        <a href="https://gududefengzhong.github.io/meteora_fees_checker/fees_checker.html" target="_blank" style="color: #00d4ff; font-size: 0.9rem; text-decoration: none;">🔗 Try it</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Tool 1 Details -->
+        <div class="slide">
+            <h2>⚡ Season 2 Dedicated Fees Tracker</h2>
+            <div style="margin: 2rem 0;">
+                <div class="highlight" style="background: linear-gradient(135deg, #ff6b6b, #ee5a52);">Market's Only S2 Dedicated Tool</div>
+            </div>
+            <div class="grid-4" style="margin: 3rem 0;">
+                <div class="card">
+                    <div class="metric">
+                        <span class="number">🎯</span>
+                        <span class="label">What It Is</span>
+                    </div>
+                    <p>First & only dedicated S2 fees tracker</p>
+                </div>
+                <div class="card">
+                    <div class="metric">
+                        <span class="number">🔧</span>
+                        <span class="label">Problem Solved</span>
+                    </div>
+                    <p>Track airdrop progress & campaign earnings</p>
+                </div>
+                <div class="card">
+                    <div class="metric">
+                        <span class="number">👥</span>
+                        <span class="label">Users Served</span>
+                    </div>
+                    <p>Airdrop hunters & S2 campaign participants</p>
+                </div>
+                <div class="card">
+                    <div class="metric">
+                        <span class="number">💡</span>
+                        <span class="label">Key Benefit</span>
+                    </div>
+                    <p>Transparent progress tracking & motivation</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Tools 2 & 3 -->
+        <div class="slide">
+            <h2>💰 Profitable Wallet Tracker & 🔍 S1 Fees Checker</h2>
+            <div class="grid-2" style="margin: 3rem 0;">
+                <div class="card">
+                    <h3 style="color: #00d4ff;">💰 Profitable Wallet Tracker</h3>
+                    <div style="margin-bottom: 1.5rem;">
+                        <span style="background: rgba(255, 107, 107, 0.2); color: #ff6b6b; padding: 0.3rem 0.8rem; border-radius: 12px; font-size: 0.9rem;">Market's only solution</span>
+                    </div>
+                    <ul class="checklist">
+                        <li><strong>Beginners</strong> - Visual understanding of profitable pools & strategies</li>
+                        <li><strong>Intermediate</strong> - Copy trading via lpagent integration</li>
+                        <li><strong>Advanced</strong> - Study successful strategies for own trading</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 style="color: #00d4ff;">🔍 S1 Fees Checker</h3>
+                    <div style="margin-bottom: 1.5rem;">
+                        <span style="background: rgba(0, 212, 255, 0.2); color: #00d4ff; padding: 0.3rem 0.8rem; border-radius: 12px; font-size: 0.9rem;">Superior alternative</span>
+                    </div>
+                    <ul class="checklist">
+                        <li><strong>Lightning Fast</strong> - Instant queries vs 30+ min loading</li>
+                        <li><strong>Reliable Service</strong> - Stable performance vs frequent errors</li>
+                        <li><strong>Better UX</strong> - Positive feedback vs community complaints</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Competitive Advantage -->
+        <div class="slide" style="justify-content: flex-start; padding-top: 80px; padding-bottom: 140px;">
+            <h2>🏆 Competitive Advantage Analysis</h2>
+            <div class="grid-2" style="margin: 1.5rem 0;">
+                <div class="card" style="border: 2px solid rgba(255, 107, 107, 0.3);">
+                    <h3 style="color: #ff6b6b; margin-bottom: 1rem;">❌ Existing S1 Checker</h3>
+                    <ul class="checklist">
+                        <li style="color: #ff9999;"><strong>Extremely Slow</strong><br><span style="color: #a0a0a0;">30+ minutes query time</span></li>
+                        <li style="color: #ff9999;"><strong>Poor User Experience</strong><br><span style="color: #a0a0a0;">Heavy negative community feedback</span></li>
+                        <li style="color: #ff9999;"><strong>Resource Heavy</strong><br><span style="color: #a0a0a0;">Requires significant infrastructure</span></li>
+                    </ul>
+                </div>
+                <div class="card" style="border: 2px solid rgba(0, 212, 255, 0.3);">
+                    <h3 style="color: #00d4ff; margin-bottom: 1rem;">✅ My S1 Checker</h3>
+                    <ul class="checklist">
+                        <li><strong>Lightning Fast</strong><br><span style="color: #a0a0a0;">Instant results, no waiting</span></li>
+                        <li><strong>Cost Effective</strong><br><span style="color: #a0a0a0;">Built using free platforms</span></li>
+                        <li><strong>Reliable Performance</strong><br><span style="color: #a0a0a0;">Stable, consistent results</span></li>
+                        <li><strong>Positive Reception</strong><br><span style="color: #a0a0a0;">Users appreciate the speed</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="cta-section compact" style="margin-top: 0.5rem; margin-bottom: 1rem;">
+                <p style="font-size: 1.1rem; color: #00d4ff; font-weight: 600;">
+                    🎯 Proved innovation doesn't require massive resources - just passion & skill
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 7: Actual Results -->
+        <div class="slide" style="justify-content: flex-start; padding-top: 100px; padding-bottom: 120px;">
+            <h2>📈 Real Impact & Community Results</h2>
+            <div class="grid-4" style="margin: 1.5rem 0;">
+                <div class="card compact">
+                    <div class="metric">
+                        <span class="number">🎉</span>
+                        <span class="label">User Recognition</span>
+                    </div>
+                    <ul class="checklist">
+                        <li>Community engagement</li>
+                        <li>Consistent usage patterns</li>
+                        <li>Positive feedback</li>
+                    </ul>
+                </div>
+                <div class="card compact">
+                    <div class="metric">
+                        <span class="number">💪</span>
+                        <span class="label">Brand Enhancement</span>
+                    </div>
+                    <ul class="checklist">
+                        <li>Shows grassroots innovation</li>
+                        <li>Enriches ecosystem tools</li>
+                        <li>Proves community potential</li>
+                    </ul>
+                </div>
+                <div class="card compact">
+                    <div class="metric">
+                        <span class="number">🌱</span>
+                        <span class="label">Ecosystem Growth</span>
+                    </div>
+                    <ul class="checklist">
+                        <li>Lowers entry barriers</li>
+                        <li>Improves user experience</li>
+                        <li>Increases user stickiness</li>
+                    </ul>
+                </div>
+                <div class="card compact">
+                    <div class="metric">
+                        <span class="number">💰</span>
+                        <span class="label">Cost Savings</span>
+                    </div>
+                    <ul class="checklist">
+                        <li>Zero-cost development</li>
+                        <li>Reduced support burden</li>
+                        <li>Independent innovation model</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Core Value -->
+        <div class="slide">
+            <h2>🎯 Core Value for Meteora Team</h2>
+            <div class="grid-2" style="margin: 3rem 0;">
+                <div class="card">
+                    <h3 style="color: #00d4ff; margin-bottom: 2rem;">📊 Key Metrics Improvement</h3>
+                    <ul class="checklist">
+                        <li><strong>User Activity ⬆️</strong><br><span style="color: #a0a0a0;">Tools drive more frequent data checking</span></li>
+                        <li><strong>User Retention ⬆️</strong><br><span style="color: #a0a0a0;">Convenience tools increase ecosystem dependency</span></li>
+                        <li><strong>Community Reputation ⬆️</strong><br><span style="color: #a0a0a0;">Solving pain points creates positive experiences</span></li>
+                        <li><strong>New User Conversion ⬆️</strong><br><span style="color: #a0a0a0;">Lower barriers, beginner-friendly</span></li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 style="color: #00d4ff; margin-bottom: 2rem;">💰 Resource Cost Reduction</h3>
+                    <ul class="checklist">
+                        <li><strong>Development Costs</strong><br><span style="color: #a0a0a0;">Independent zero-cost development</span></li>
+                        <li><strong>Operations Costs</strong><br><span style="color: #a0a0a0;">Reduces repetitive support queries</span></li>
+                        <li><strong>Marketing Costs</strong><br><span style="color: #a0a0a0;">Good UX creates organic promotion</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Seeking Support -->
+        <div class="slide">
+            <h2>🤝 Seeking Support & Partnership</h2>
+            <div class="grid-4" style="margin: 3rem 0;">
+                <div class="card">
+                    <div class="metric">
+                        <span class="number">🎖️</span>
+                        <span class="label">Official Recognition</span>
+                    </div>
+                    <p>Hope for team acknowledgment<br>Appropriate promotion in official channels</p>
+                </div>
+                <div class="card">
+                    <div class="metric">
+                        <span class="number">🚀</span>
+                        <span class="label">Enhancement Support</span>
+                    </div>
+                    <p>If tools show value, official support could improve<br>stability, real-time data & system reliability</p>
+                </div>
+                <div class="card">
+                    <div class="metric">
+                        <span class="number">🌟</span>
+                        <span class="label">Collaboration</span>
+                    </div>
+                    <p>Participate in more community building<br>Take on additional tech development</p>
+                </div>
+                <div class="card">
+                    <div class="metric">
+                        <span class="number">💡</span>
+                        <span class="label">Long-term Partnership</span>
+                    </div>
+                    <p>Build deeper cooperation<br>Drive ecosystem growth together</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Conclusion -->
+        <div class="slide" style="justify-content: flex-start; padding-top: 80px; padding-bottom: 150px;">
+            <div style="margin-bottom: 2rem;">
+                <h1 style="font-size: 2.5rem;">Genuine 💖 for Meteora Ecosystem</h1>
+            </div>
+
+            <div style="margin: 2rem 0;">
+                <div class="highlight" style="font-size: 1rem; margin: 0.5rem;">Tech for Community</div>
+                <div class="highlight" style="font-size: 1rem; margin: 0.5rem;">Volunteer Spirit</div>
+                <div class="highlight" style="font-size: 1rem; margin: 0.5rem;">Continuous Contribution</div>
+            </div>
+
+            <div class="cta-section" style="margin-top: 2rem;">
+                <h2 style="color: #00d4ff; margin-bottom: 1rem; font-size: 1.6rem;">
+                    Looking forward to building deeper partnership<br>
+                    to drive ecosystem prosperity together!
+                </h2>
+
+                <div class="card" style="max-width: 600px; margin: 1.5rem auto; padding: 1.2rem;">
+                    <h3 style="color: #00d4ff; margin-bottom: 0.8rem; font-size: 1.2rem;">📞 Contact & Links</h3>
+                    <div style="text-align: left; font-size: 0.9rem;">
+                        <p style="margin: 0.3rem 0;"><strong>X (Twitter):</strong> <a href="https://x.com/rochestor_mu" target="_blank" style="color: #00d4ff;">@rochestor_mu</a></p>
+                        <p style="margin: 0.3rem 0;"><strong>S2 Tracker:</strong> <a href="https://gududefengzhong.github.io/meteora_s2_fees_checker/" target="_blank" style="color: #00d4ff;">Try it here</a></p>
+                        <p style="margin: 0.3rem 0;"><strong>Wallet Tracker:</strong> <a href="https://gududefengzhong.github.io/hot_pool_tracker/meteora-tracker.html" target="_blank" style="color: #00d4ff;">Try it here</a></p>
+                        <p style="margin: 0.3rem 0;"><strong>S1 Checker:</strong> <a href="https://gududefengzhong.github.io/meteora_fees_checker/fees_checker.html" target="_blank" style="color: #00d4ff;">Try it here</a></p>
+                    </div>
+                </div>
+
+                <p style="margin-top: 1rem; color: #a0a0a0; font-size: 1rem;">
+                    Thank you for your time and attention 🙏
+                </p>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="nav-left">
+            <button class="nav-btn" onclick="previousSlide()" aria-label="Previous slide">←</button>
+        </div>
+        <div class="nav-right">
+            <button class="nav-btn" onclick="nextSlide()" aria-label="Next slide">→</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        
+        document.getElementById('total-slides').textContent = totalSlides;
+        
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            
+            document.getElementById('current-slide').textContent = currentSlide + 1;
+            document.querySelector('.progress-bar').style.width = 
+                ((currentSlide + 1) / totalSlides * 100) + '%';
+        }
+        
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+        
+        function previousSlide() {
+            showSlide(currentSlide - 1);
+        }
+        
+        // Keyboard controls
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                previousSlide();
+            } else if (e.key === 'Home') {
+                showSlide(0);
+            } else if (e.key === 'End') {
+                showSlide(totalSlides - 1);
+            }
+        });
+        
+        // Initialize progress bar
+        document.querySelector('.progress-bar').style.width = 
+            (1 / totalSlides * 100) + '%';
+            
+        // Touch gesture support for mobile
+        let startX = 0;
+        let startY = 0;
+        
+        document.addEventListener('touchstart', function(e) {
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+        });
+        
+        document.addEventListener('touchend', function(e) {
+            const endX = e.changedTouches[0].clientX;
+            const endY = e.changedTouches[0].clientY;
+            const diffX = startX - endX;
+            const diffY = startY - endY;
+            
+            if (Math.abs(diffX) > Math.abs(diffY)) {
+                if (diffX > 50) {
+                    nextSlide();
+                } else if (diffX < -50) {
+                    previousSlide();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
